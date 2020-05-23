@@ -15,7 +15,7 @@ class fullNode extends Node{
     }
 
     initPeer(){
-        topology("127.0.0.1:4500","127.0.0.1:4501")
+        topology("127.0.0.1:4500",["127.0.0.1:4501"])
             .on('connection',(socket,peer) => {
                 console.log(`peer connected: ${peer} \n`)
                 this.peers[peer] = socket;
@@ -40,10 +40,10 @@ class fullNode extends Node{
     filterBloomFilters(transactions,latestBlock) {
         for(const filter of this.bloomFilters){
             for(const tx of transactions){
-                if(filter.bloom.has(transactions)){
+                if(filter.bloom.has(tx)){
                     let socket = this.peers[filter.peer];
-                    latestBlock.merkleTree.proof()
-                    socket.write(JSON.stringify())
+                    let proof = latestBlock.merkleTree.transactionProof(tx);
+                    socket.write(JSON.stringify(proof))
 
                 }
             }
