@@ -1,0 +1,31 @@
+{
+  "name": "zuzimcoin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Avisaac/zuzimCoin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Avisaac/zuzimCoin/issues"
+  },
+  "homepage": "https://github.com/Avisaac/zuzimCoin#readme",
+  "dependencies": {
+    "assert": "^2.0.0",
+    "bloom-filters": "^1.3.1",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.0.0",
+    "elliptic": "^6.5.2",
+    "fs": "0.0.1-security",
+    "fully-connected-topology": "^1.1.1",
+    "secp256k1": "^4.0.1",
+    "simple-peer": "^9.7.2",
+    "wrtc": "^0.4.5"
+  }
+}
