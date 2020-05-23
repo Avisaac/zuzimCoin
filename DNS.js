@@ -15,3 +15,5 @@ class DNS {
         return JSON.stringify(this.fullNodes);
     }
 }
+
+module.exports.DNS = DNS;

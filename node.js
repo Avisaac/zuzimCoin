@@ -2,6 +2,7 @@ const {MemPoolActions} = require('./mem_pool_actions');
 const EC = require('elliptic').ec;
 const ec = new EC('secp256k1');
 const {DNS} = require("./DNS");
+const { Transaction } = require('./blockchain');
 
 class Node {
     constructor() {
@@ -13,6 +14,9 @@ class Node {
     }
 
     bereshitTransaction() {
-        this.mActions.writeTransaction(new Transaction(null, this.address, 1000));
+        const t = new Transaction(null, this.address, 1000);
+        this.mActions.writeTransaction(t);
     }
 }
+
+module.exports.Node = Node;

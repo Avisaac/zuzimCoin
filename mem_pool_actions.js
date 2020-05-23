@@ -1,16 +1,16 @@
-var fs = require('fs');
+const fs = require('fs');
 
 class MemPoolActions {
     writeTransaction(transaction) {
         console.log('Writing data..');
-        const memData = this.readTransaction();
+        let memData = this.readTransaction();
         if (memData) { memData.push(transaction); }
         else { memData = [transaction]; };
         fs.writeFileSync('./mem_pool.json', JSON.stringify(memData));
         console.log('Done writing.');
     }
 
-    readTransactions() {
+    readTransaction() {
         let dataObj;
         fs.readFileSync('./mem_pool.json', (data) => {
             if (data) {

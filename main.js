@@ -1,6 +1,8 @@
-const {Wallet} = require('./wallet');
+const { Wallet } = require('./wallet');
 
 w = new Wallet();
+
+console.log('Wired up');
 // create full node
 // create wallet and full node main
 // wallet main

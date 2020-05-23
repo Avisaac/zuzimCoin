@@ -1,9 +1,9 @@
-const {Node} = require("./node");
+const { Node } = require("./node");
 const {Transaction} = require('./blockchain');
 const { BloomFilter } = require('bloom-filters');
 const { MerkleTree } = require('./merkletree');
 
-class Wallet extends Node{
+class Wallet extends Node {
     constructor() {
         super();
         this.transactions = [];
