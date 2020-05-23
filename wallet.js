@@ -1,22 +1,21 @@
-const {MemPoolActions} = require('./mem_pool_actions');
+const {Node} = require("./node");
 const {Transaction} = require('./blockchain');
-const EC = require('elliptic').ec;
-const ec = new EC('secp256k1');
+const { BloomFilter } = require('bloom-filters');
+const { MerkleTree } = require('./merkletree');
 
-class Wallet {
+class Wallet extends Node{
     constructor() {
-        const keyPair = ec.genKeyPair(); 
-        this.key = ec.keyFromPrivate(keyPair.getPrivate());
-        this.address = keyPair.getPublic('hex');
+        super();
         this.transactions = [];
-
-        console.log('created');
-        this.mActions = new MemPoolActions();
         this.bereshitTransaction();
+        this.fullNodes = this.DNS.getFullNodes();
+        this.bloomFilter = new BloomFilter(10,4);
+        this.bloomFilter.add(this.address);
+        this.sendBloomFilter();
     }
 
-    bereshitTransaction() {
-        this.mActions.writeTransaction(new Transaction(null, this.address, 1000)); 
+    sendBloomFilter(){
+        // send bloom filter
     }
 
     sendZuzim(toAddress, amount) {
@@ -26,8 +25,15 @@ class Wallet {
         this.mActions.writeTransaction(t);
     }
 
-    verify(transactionHash, reuslts) {
-
+    verify(transactionHash, merklePathTransactions) {
+        let merkleTree = new MerkleTree(merklePathTransactions);
+        if(merkleTree.root() === merklePathTransactions.root){
+            console.log(`transaction ${transactionHash} is verified`);
+            return true;
+        } else {
+            console.log(`transaction ${transactionHash} is NOT verified`);
+            return false;
+        }
     }
 
 

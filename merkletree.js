@@ -1,26 +1,15 @@
 const assert = require('assert')
-const crypto = require('crypto')
+const SHA256 = require('crypto-js/sha256');
 
-module.exports =
+
+
 class MerkleTree {
-  constructor (digestFn, data) {
-    assert(['string', 'function'].includes(typeof digestFn), 'A Merkle tree requires a digest function.')
-    assert(data instanceof Array, 'A Merkle tree requires an array of values.')
-    if (typeof digestFn === 'string') {
-      this.digestFn = MerkleTree.digestFn.bind(null, digestFn)
-    } else {
-      this.digestFn = digestFn
-    }
-    const leaves = data.map(this.digestFn)
+
+  constructor (data) {
+    const leaves = data.map(SHA256)
     this._levels = [leaves].concat(this._derive(leaves))
   }
 
-  static digestFn (hashType, data) {
-    if (typeof data !== 'string') data = JSON.stringify(data)
-    const hash = crypto.createHash(hashType)
-    hash.update(data)
-    return hash.digest('hex')
-  }
 
   proof (index) {
     let proof = []
@@ -48,7 +37,7 @@ class MerkleTree {
         ? left
         : data[i + 1]
       const node = JSON.stringify([left, right])
-      level.push(this.digestFn(node))
+      level.push(SHA256(node))
     }
     // derink and derive
     if (level.length > 1) {
@@ -76,3 +65,4 @@ class MerkleTree {
     return this.levels[0]
   }
 }
+module.exports.MerkleTree = MerkleTree;

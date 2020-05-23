@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const EC = require('elliptic').ec;
 const ec = new EC('secp256k1');
+const MerkleTree = require('./merkletree');
 const debug = console.log;
 
 class Transaction {
@@ -79,6 +80,7 @@ class Block {
     this.previousHash = previousHash;
     this.timestamp = timestamp;
     this.transactions = transactions;
+    this.merkleTree = new MerkleTree(this.transactions);
     this.nonce = 0;
     this.hash = this.calculateHash();
   }

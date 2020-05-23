@@ -10,7 +10,7 @@ class MemPoolActions {
         console.log('Done writing.');
     }
 
-    readTransaction() {
+    readTransactions() {
         let dataObj;
         fs.readFileSync('./mem_pool.json', (data) => {
             if (data) {
@@ -19,6 +19,10 @@ class MemPoolActions {
         });
 
         return dataObj;
+    }
+
+    clear(){
+
     }
 }
 
