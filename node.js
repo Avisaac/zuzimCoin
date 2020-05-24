@@ -14,6 +14,8 @@ class Node {
             "2.Balance: ",
             "2.Transaction: "
         ]
+
+        console.log("My public address:" + this.address);
     }
 
     init() {

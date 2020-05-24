@@ -25,7 +25,7 @@ class MemPoolActions {
     }
 
     clear() {
-
+        fs.writeFileSync('./mem_pool.json', '');
     }
 }
 

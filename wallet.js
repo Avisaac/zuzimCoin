@@ -2,6 +2,7 @@ const { Node } = require("./node");
 const { Transaction } = require('./blockchain');
 const { BloomFilter } = require('bloom-filters');
 const { MerkleTree } = require('./merkletree');
+const { stdin, exit, argv } = process;
 const { P2p } = require('./p2p');
 const topology = require('fully-connected-topology');
 
@@ -11,7 +12,6 @@ class Wallet extends Node {
         this.transactions = [];
         this.bereshitTransaction();
         this.connection = new P2p(srcPort, destPort);
-        this.fullNodes = this.DNS.getFullNodes();
         this.bloomFilter = new BloomFilter(10,4);
         this.bloomFilter.add(this.address);
         this.options = [
@@ -24,7 +24,15 @@ class Wallet extends Node {
         this.connection.topology = topology(this.connection.selfIp, this.connection.peerIps).
             on('connection', (fullNode,peer) => {
             this.sendBloomFilter(fullNode);
-            this.printMain(this.options)
+            this.printMain();
+
+            stdin.on('data',data => {
+                let args = data.split(' ');
+                if(args[0] === '1'){
+                    this.sendZuzim(args[1],args[2]);
+                }
+            })
+
             fullNode.on('data',data => {
                 console.log(data);
             })
