@@ -8,7 +8,6 @@ class FullNode extends Node{
         super();
         this.blockchain = new Blockchain();
         this.bereshitTransaction();
-        this.DNS.registerFullNode(this.peer);
         this.bloomFilters = [];
         this.peers = {};
     }
@@ -33,7 +32,7 @@ class FullNode extends Node{
     }
 
     receiveBloomFilter(peer,bloomFilter){
-        this.bloomFilters.push({'peer':peer,'bloomFilter':BloomFilter.fromJSON(bloomFilter)});
+        this.bloomFilters.push({'peer':peer,'bloomFilter':BloomFilter.fromJSON(JSON.parse(bloomFilter.toString()))});
     }
 
     filterBloomFilters(transactions,latestBlock) {
