@@ -1,21 +1,19 @@
 const {Node} = require("./node");
-const Peer = require('simple-peer')
-const wrtc = require('wrtc')
 const { BloomFilter } = require('bloom-filters');
+const { Blockchain } = require('./blockchain');
 const topology = require('fully-connected-topology');
 
-class fullNode extends Node{
+class FullNode extends Node{
     constructor() {
         super();
         this.blockchain = new Blockchain();
         this.bereshitTransaction();
-        this.DNS.registerFullNode(this.peer);
         this.bloomFilters = [];
         this.peers = {};
     }
 
-    initPeer(){
-        topology("127.0.0.1:4500",["127.0.0.1:4501"])
+    init(){
+        topology("127.0.0.1:4000",["127.0.0.1:4001"])
             .on('connection',(socket,peer) => {
                 console.log(`peer connected: ${peer} \n`)
                 this.peers[peer] = socket;
@@ -34,7 +32,7 @@ class fullNode extends Node{
     }
 
     receiveBloomFilter(peer,bloomFilter){
-        this.bloomFilters.push({'peer':peer,'bloomFilter':BloomFilter.fromJSON(bloomFilter)});
+        this.bloomFilters.push({'peer':peer,'bloomFilter':BloomFilter.fromJSON(JSON.parse(bloomFilter.toString()))});
     }
 
     filterBloomFilters(transactions,latestBlock) {
@@ -56,3 +54,5 @@ class fullNode extends Node{
     }
 
 }
+
+module.exports.FullNode = FullNode  ;

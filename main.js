@@ -1,5 +1,5 @@
 const {Wallet} = require('./wallet');
-const {Node} = require('./node.js');
+const {FullNode} = require('./full_node.js');
 const { stdin, exit, argv } = process;
 
 const params = {
@@ -10,7 +10,7 @@ const params = {
 
 let current;
 if (params.isNode) {
-    current = new Node(params.selfPort, params.peers);
+    current = new FullNode(params.selfPort, params.peers);
 } else if (!params.isNode) {
     current = new Wallet(params.selfPort, params.peers);
 }

@@ -25,19 +25,6 @@ class Node {
         this.mActions.writeTransaction(t);
     }
 
-    mine() {
-        // let transactions = [];
-        // let transactionsData = this.mActions.readTransaction();
-        //
-        // for (const tx of transactionsData) {
-        //     transactions.push(Object.assign(new Transaction, tx));
-        // }
-        //
-        // this.blockChain.minePendingTransactions(this.address, transactions.slice(0, 3));
-        //
-        // writeToMemPool(transactions.slice(3, transactions.length));
-    }
-
     printMain() {
         console.log("<-----options----->");
         this.options.forEach(o => console.log(o))
