@@ -30,10 +30,10 @@ class FullNode extends Node{
     }
 
     mine() {
-        // Add check if there exactly 4 transactions
         let transactions = this.mActions.readTransactions();
         if(transactions.size !== 4){
             console.log("Not enough transactions to start mining")
+            return;
         }
         this.blockchain.minePendingTransactions(this.address);
         let latestBlock = this.blockchain.getLatestBlock();
