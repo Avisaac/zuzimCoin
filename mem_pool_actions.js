@@ -16,6 +16,7 @@ class MemPoolActions {
 
     readTransaction() {
         let text = fs.readFileSync('./mem_pool.json');
+        // if [] return else if [transactions] parse into transactions
         return JSON.parse(text.toString());
     }
 
