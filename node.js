@@ -13,7 +13,7 @@ class Node {
             "1.Mine: ",
             "2.Balance: ",
             "2.Transaction: "
-        ]
+        ];
 
         console.log("My public address:" + this.address);
     }
@@ -22,9 +22,9 @@ class Node {
 
     }
 
-    bereshitTransaction() {
+    bereshitTransaction(type) {
         const t = new Transaction(null, this.address, 1000);
-        this.mActions.writeTransaction(t);
+        this.mActions.writeTransaction(t, type);
     }
 
     printMain() {

@@ -1,8 +1,1 @@
-[
-  {
-    "fromAddress": null,
-    "toAddress": "04578081e27a19f98dbc428842bc01296dfde1dc94d6828f0d2729d0846742d086c71e63181579661a8f1b237bb628fa7db7a8321df681adec3a32cf11fe37ee0c",
-    "amount": 1000,
-    "timestamp": 1590309849356
-  }
-]
+[{"fromAddress":null,"toAddress":"04555eb8291b842503bc3c93f04ffcb290e0a5b5eacafaa9b143b8c362272e3284e637790af8dcce591848d4eddead425c28b554a5a26df2dfd2a9e66f63ad319b","amount":1000,"timestamp":1590310676295}]

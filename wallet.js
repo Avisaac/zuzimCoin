@@ -10,7 +10,7 @@ class Wallet extends Node {
     constructor(srcPort,destPort) {
         super();
         this.transactions = [];
-        this.bereshitTransaction();
+        this.bereshitTransaction('wallet');
         this.connection = new P2p(srcPort, destPort);
         this.bloomFilter = new BloomFilter(10,4);
         this.bloomFilter.add(this.address);
@@ -37,9 +37,6 @@ class Wallet extends Node {
                 console.log(data);
             })
         });
-
-
-
     }
 
     sendBloomFilter(fullNode){

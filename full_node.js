@@ -7,7 +7,7 @@ class FullNode extends Node{
     constructor() {
         super();
         this.blockchain = new Blockchain();
-        this.bereshitTransaction();
+        this.bereshitTransaction('full_node');
         this.bloomFilters = [];
         this.peers = {};
     }
