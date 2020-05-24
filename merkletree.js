@@ -31,7 +31,6 @@ class MerkleTree {
 
   _derive (data) {
     let level = [];
-    // successively hash arbitrary elements
     for (let i = 0; i < data.length; i += 2) {
       const left = data[i];
       const right = (i + 1 === data.length)
@@ -40,12 +39,9 @@ class MerkleTree {
       const node = JSON.stringify([left, right]);
       level.push(SHA256(node).toString());
     }
-    // derink and derive
     if (level.length > 1) {
-      // keep deriving
       return [level].concat(this._derive(level));
     } else {
-      // found root node
       return [level];
     }
   }
