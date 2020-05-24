@@ -39,6 +39,9 @@ class FullNode extends Node{
             console.log("Not enough transactions to start mining")
             return;
         }
+        for(const transaction of transactions){
+            this.blockchain.pendingTransactions.push(transaction);
+        }
         this.blockchain.minePendingTransactions(this.address);
         let latestBlock = this.blockchain.getLatestBlock();
 
