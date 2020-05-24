@@ -3,7 +3,7 @@ const SHA256 = require('crypto-js/sha256');
 class MerkleTree {
 
   constructor (data) {
-    const leaves = data.map(x => SHA256(x).toString())
+    const leaves = data.map(x => x.calculateHash())
     this._levels = [leaves].concat(this._derive(leaves))
   }
 

@@ -1,6 +1,7 @@
 const {Node} = require("./node");
 const { BloomFilter } = require('bloom-filters');
 const { Blockchain } = require('./blockchain');
+const { stdin, exit, argv } = process;
 const topology = require('fully-connected-topology');
 
 class FullNode extends Node{
@@ -10,6 +11,9 @@ class FullNode extends Node{
         this.bereshitTransaction('full_node');
         this.bloomFilters = [];
         this.peers = {};
+        this.options = [
+            '1.mine'
+        ]
     }
 
     init(){
@@ -17,11 +21,11 @@ class FullNode extends Node{
             .on('connection',(socket,peer) => {
                 console.log(`peer connected: ${peer} \n`)
                 this.peers[peer] = socket;
-
+                this.printMain()
                 socket.on('data',data => this.receiveBloomFilter(peer,data))
 
                 stdin.on('data',data => {
-                    let args = data.toString().split(' ');
+                    let args = data.toString().trim().split(' ');
                     if(args[0] === '1'){
                         this.mine()
                     }
@@ -30,10 +34,13 @@ class FullNode extends Node{
     }
 
     mine() {
-        let transactions = this.mActions.readTransactions();
-        if(transactions.size !== 4){
+        let transactions = this.mActions.readTransaction();
+        if(transactions.length !== 3){
             console.log("Not enough transactions to start mining")
             return;
+        }
+        for(const transaction of transactions){
+            this.blockchain.pendingTransactions.push(transaction);
         }
         this.blockchain.minePendingTransactions(this.address);
         let latestBlock = this.blockchain.getLatestBlock();
@@ -43,13 +50,14 @@ class FullNode extends Node{
     }
 
     receiveBloomFilter(peer,bloomFilter){
-        this.bloomFilters.push({'peer':peer,'bloomFilter':BloomFilter.fromJSON(JSON.parse(bloomFilter.toString()))});
+        let bloomFilter1 = BloomFilter.fromJSON(JSON.parse(bloomFilter.toString()));
+        this.bloomFilters.push({'peer':peer,'bloomFilter': bloomFilter1});
     }
 
     filterBloomFilters(transactions,latestBlock) {
         for(const filter of this.bloomFilters){
             for(const tx of transactions){
-                if(filter.bloom.has(tx)){
+                if(filter.bloomFilter.has(tx.toAddress)){
                     let socket = this.peers[filter.peer];
                     let proof = latestBlock.merkleTree.transactionProof(tx);
                     socket.write(JSON.stringify(proof))

@@ -3,7 +3,6 @@ const {FullNode} = require('./full_node.js');
 const { stdin, exit, argv } = process;
 const {MemPoolActions} = require('./mem_pool_actions');
 const mActions = new MemPoolActions();
-mActions.clear();
 
 const params = {
     isNode: argv[2] === 'node',
@@ -13,6 +12,7 @@ const params = {
 
 let current;
 if (params.isNode) {
+    mActions.clear();
     current = new FullNode(params.selfPort, params.peers);
 } else if (!params.isNode) {
     current = new Wallet(params.selfPort, params.peers);
