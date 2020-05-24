@@ -1,7 +1,6 @@
 const {MemPoolActions} = require('./mem_pool_actions');
 const EC = require('elliptic').ec;
 const ec = new EC('secp256k1');
-const {DNS} = require("./DNS");
 const { Transaction } = require('./blockchain');
 
 class Node {
@@ -10,7 +9,11 @@ class Node {
         this.key = ec.keyFromPrivate(keyPair.getPrivate());
         this.address = keyPair.getPublic('hex');
         this.mActions = new MemPoolActions();
-        this.DNS = new DNS();
+        this.options = [
+            "1.Mine: ",
+            "2.Balance: ",
+            "2.Transaction: "
+        ]
     }
 
     init() {
@@ -33,6 +36,11 @@ class Node {
         // this.blockChain.minePendingTransactions(this.address, transactions.slice(0, 3));
         //
         // writeToMemPool(transactions.slice(3, transactions.length));
+    }
+
+    printMain() {
+        console.log("<-----options----->");
+        this.options.forEach(o => console.log(o))
     }
 }
 
