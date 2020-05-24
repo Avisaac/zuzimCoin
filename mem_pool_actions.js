@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { Transaction } = require('./blockchain');
 
 class MemPoolActions {
     writeTransaction(transaction, type) {
@@ -16,8 +17,14 @@ class MemPoolActions {
 
     readTransaction() {
         let text = fs.readFileSync('./mem_pool.json');
-        // if [] return else if [transactions] parse into transactions
-        return JSON.parse(text.toString());
+        let arr = JSON.parse(text.toString());
+        let transactions = [];
+        if (arr.length) {
+            arr.forEach(a => {
+                transactions.push(new Transaction(a.fromAddress, a.toAddress, a.amount));
+            });
+            return transactions;
+        }
     }
 
     clear() {
