@@ -1,8 +1,9 @@
 const {Node} = require("./node");
 const { BloomFilter } = require('bloom-filters');
+const { Blockchain } = require('./blockchain');
 const topology = require('fully-connected-topology');
 
-class fullNode extends Node{
+class FullNode extends Node{
     constructor() {
         super();
         this.blockchain = new Blockchain();
@@ -54,3 +55,5 @@ class fullNode extends Node{
     }
 
 }
+
+module.exports.FullNode = FullNode  ;

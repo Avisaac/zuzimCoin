@@ -14,17 +14,24 @@ class Wallet extends Node {
         this.fullNodes = this.DNS.getFullNodes();
         this.bloomFilter = new BloomFilter(10,4);
         this.bloomFilter.add(this.address);
-        this.sendBloomFilter();
     }
 
     init() {
-        this.connection.topology = topology(this.connection.selfIp, this.connection.peerIps)
+        this.connection.topology = topology(this.connection.selfIp, this.connection.peerIps).
+            on('connection', (fullNode,peer) => {
+            this.sendBloomFilter(fullNode);
+            fullNode.on('data',data => {
+                console.log(data);
+            })
+        });
+
 
 
     }
 
-    sendBloomFilter(){
-        // send bloom filter
+    sendBloomFilter(fullNode){
+        let filterJson = this.bloomFilter.saveAsJSON();
+        fullNode.write(JSON.stringify(filterJson));
     }
 
     sendZuzim(toAddress, amount) {
