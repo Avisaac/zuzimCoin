@@ -6,7 +6,6 @@ class MemPoolActions {
         console.log(`Writing data for ${type}..`);
         let memData = this.readTransaction();
         if (memData) {
-            console.log(memData.toString());
             memData.push(transaction);
         } else {
             memData = [transaction];
