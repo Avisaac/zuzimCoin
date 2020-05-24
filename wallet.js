@@ -27,9 +27,11 @@ class Wallet extends Node {
             this.printMain();
 
             stdin.on('data',data => {
-                let args = data.split(' ');
+                let args = data.toString().split(' ');
                 if(args[0] === '1'){
                     this.sendZuzim(args[1],args[2]);
+                } else if(args[0] === '2'){
+                    // verify
                 }
             })
 

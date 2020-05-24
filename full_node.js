@@ -19,11 +19,22 @@ class FullNode extends Node{
                 this.peers[peer] = socket;
 
                 socket.on('data',data => this.receiveBloomFilter(peer,data))
+
+                stdin.on('data',data => {
+                    let args = data.toString().split(' ');
+                    if(args[0] === '1'){
+                        this.mine()
+                    }
+                })
             })
     }
 
     mine() {
         let transactions = this.mActions.readTransactions();
+        if(transactions.size !== 4){
+            console.log("Not enough transactions to start mining")
+            return;
+        }
         this.blockchain.minePendingTransactions(this.address);
         let latestBlock = this.blockchain.getLatestBlock();
 
