@@ -13,8 +13,8 @@ class FullNode extends Node{
         this.peers = {};
     }
 
-    initPeer(){
-        topology("127.0.0.1:4500",["127.0.0.1:4501"])
+    init(){
+        topology("127.0.0.1:4000",["127.0.0.1:4001"])
             .on('connection',(socket,peer) => {
                 console.log(`peer connected: ${peer} \n`)
                 this.peers[peer] = socket;

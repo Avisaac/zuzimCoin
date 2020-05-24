@@ -6,11 +6,11 @@ const { P2p } = require('./p2p');
 const topology = require('fully-connected-topology');
 
 class Wallet extends Node {
-    constructor() {
+    constructor(srcPort,destPort) {
         super();
         this.transactions = [];
         this.bereshitTransaction();
-        this.connection = new P2p(srcPort, dstPorts);
+        this.connection = new P2p(srcPort, destPort);
         this.fullNodes = this.DNS.getFullNodes();
         this.bloomFilter = new BloomFilter(10,4);
         this.bloomFilter.add(this.address);
