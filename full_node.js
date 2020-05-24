@@ -1,6 +1,4 @@
 const {Node} = require("./node");
-const Peer = require('simple-peer')
-const wrtc = require('wrtc')
 const { BloomFilter } = require('bloom-filters');
 const topology = require('fully-connected-topology');
 
