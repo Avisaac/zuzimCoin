@@ -8,7 +8,7 @@ class MerkleTree {
   }
 
   transactionProof(transaction){
-    let indexOf = this.leaves.indexOf(SHA256(transaction).toString());
+    let indexOf = this.leaves.indexOf(transaction);
     return this.proof(indexOf);
   }
 
@@ -38,7 +38,7 @@ class MerkleTree {
         ? left
         : data[i + 1];
       const node = JSON.stringify([left, right]);
-      level.push(SHA256(node));
+      level.push(SHA256(node).toString());
     }
     // derink and derive
     if (level.length > 1) {

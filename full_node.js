@@ -22,7 +22,20 @@ class FullNode extends Node{
                 console.log(`peer connected: ${peer} \n`)
                 this.peers[peer] = socket;
                 this.printMain()
-                socket.on('data',data => this.receiveBloomFilter(peer,data))
+                socket.on('data',data => {
+                        let parse = JSON.parse(data);
+                        let strings = Object.keys(parse);
+                        if (strings[0] === 'verify') {
+                            let latestBlock = this.blockchain.getLatestBlock();
+                            let proof = latestBlock.merkleTree.transactionProof(parse.verify);
+                            socket.write(JSON.stringify({root:latestBlock.merkleTree.root,proof:proof}))
+                        } else if(strings[0] === 'bloom'){
+                            this.receiveBloomFilter(peer, parse.bloom)
+                        } else if(strings[0] === 'balance'){
+                            let balanceOfAddress = this.blockchain.getBalanceOfAddress(parse.balance);
+                            console.log(`the balance for address:${parse.balance} is ${balanceOfAddress}`);
+                        }
+                    });
 
                 stdin.on('data',data => {
                     let args = data.toString().trim().split(' ');
@@ -45,12 +58,13 @@ class FullNode extends Node{
         this.blockchain.minePendingTransactions(this.address);
         let latestBlock = this.blockchain.getLatestBlock();
 
+        transactions.forEach(tx => console.log(`done with transaction ${tx.calculateHash()} with amount ${tx.amount}`))
         this.filterBloomFilters(transactions,latestBlock);
         this.mActions.clear();
     }
 
     receiveBloomFilter(peer,bloomFilter){
-        let bloomFilter1 = BloomFilter.fromJSON(JSON.parse(bloomFilter.toString()));
+        let bloomFilter1 = BloomFilter.fromJSON(bloomFilter);
         this.bloomFilters.push({'peer':peer,'bloomFilter': bloomFilter1});
     }
 
@@ -59,8 +73,8 @@ class FullNode extends Node{
             for(const tx of transactions){
                 if(filter.bloomFilter.has(tx.toAddress)){
                     let socket = this.peers[filter.peer];
-                    let proof = latestBlock.merkleTree.transactionProof(tx);
-                    socket.write(JSON.stringify(proof))
+                    let proof = latestBlock.merkleTree.transactionProof(tx.calculateHash());
+                    socket.write(JSON.stringify({root:latestBlock.merkleTree.root,proof:proof}))
 
                 }
             }

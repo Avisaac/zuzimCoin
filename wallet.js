@@ -4,6 +4,7 @@ const { BloomFilter } = require('bloom-filters');
 const { MerkleTree } = require('./merkletree');
 const { stdin, exit, argv } = process;
 const { P2p } = require('./p2p');
+const SHA256 = require('crypto-js/sha256');
 const topology = require('fully-connected-topology');
 
 class Wallet extends Node {
@@ -16,7 +17,9 @@ class Wallet extends Node {
         this.bloomFilter.add(this.address);
         this.options = [
             "1.Send zuzim: address amount",
-            "2.Verify: transactionId"
+            "2.Verify: transactionId",
+            "3.Balance"
+
         ]
     }
 
@@ -31,19 +34,22 @@ class Wallet extends Node {
                 if(args[0] === '1'){
                     this.sendZuzim(args[1],args[2]);
                 } else if(args[0] === '2'){
-                    // verify
+                    let transactionId = args[1];
+                    fullNode.write(JSON.stringify({verify:transactionId}))
+                } else if(args[0] === '3'){
+                    fullNode.write(JSON.stringify({balance:this.address}))
                 }
             })
 
             fullNode.on('data',data => {
-                console.log(data);
+                this.verify(JSON.parse(data))
             })
         });
     }
 
     sendBloomFilter(fullNode){
         let filterJson = this.bloomFilter.saveAsJSON();
-        fullNode.write(JSON.stringify(filterJson));
+        fullNode.write(JSON.stringify({bloom:filterJson}));
     }
 
     sendZuzim(toAddress, amount) {
@@ -53,13 +59,15 @@ class Wallet extends Node {
         this.mActions.writeTransaction(t);
     }
 
-    verify(transactionHash, merklePathTransactions) {
-        let merkleTree = new MerkleTree(merklePathTransactions);
-        if(merkleTree.root() === merklePathTransactions.root){
-            console.log(`transaction ${transactionHash} is verified`);
+    verify(data) {
+        let proof = data.proof;
+        let root  = data.root;
+        let verification = SHA256(JSON.stringify(proof[1])).toString();
+        if(verification === root){
+            console.log(`transaction is verified`);
             return true;
         } else {
-            console.log(`transaction ${transactionHash} is NOT verified`);
+            console.log(`transaction is NOT verified`);
             return false;
         }
     }
