@@ -50,7 +50,7 @@ class Wallet extends Node {
         const t = new Transaction(this.address, toAddress, amount)
         t.signTransaction(this.key);
         this.transactions.push(t.calculateHash());
-        this.mActions.writeTransaction(t);
+        this.mActions.writeTransaction(t, 'wallet');
     }
 
     verify(transactionHash, merklePathTransactions) {
