@@ -4,8 +4,11 @@ class MemPoolActions {
     writeTransaction(transaction) {
         console.log('Writing data..');
         let memData = this.readTransaction();
-        if (memData) { memData.push(transaction); }
-        else { memData = [transaction]; };
+        if (memData) {
+            memData.push(transaction);
+        } else {
+            memData = [transaction];
+        }
         fs.writeFileSync('./mem_pool.json', JSON.stringify(memData));
         console.log('Done writing.');
     }
@@ -21,7 +24,7 @@ class MemPoolActions {
         return dataObj;
     }
 
-    clear(){
+    clear() {
 
     }
 }

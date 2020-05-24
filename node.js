@@ -13,6 +13,10 @@ class Node {
         this.DNS = new DNS();
     }
 
+    init() {
+
+    }
+
     bereshitTransaction() {
         const t = new Transaction(null, this.address, 1000);
         this.mActions.writeTransaction(t);
