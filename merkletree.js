@@ -1,7 +1,5 @@
 const SHA256 = require('crypto-js/sha256');
 
-
-
 class MerkleTree {
 
   constructor (data) {
@@ -15,57 +13,58 @@ class MerkleTree {
   }
 
   proof (index) {
-    let proof = []
+    let proof = [];
 
     for (let i = 0; i < this.depth; i++) {
-      let level = this.levels[i]
-      let width = level.length
+      let level = this.levels[i];
+      let width = level.length;
       if (!(index === width - 1 && width % 2 === 1)) {
-        const left = (index % 2) ? level[index - 1] : level[index]
-        const right = (index % 2) ? level[index] : level[index + 1]
-        proof.push([left, right])
+        const left = (index % 2) ? level[index - 1] : level[index];
+        const right = (index % 2) ? level[index] : level[index + 1];
+        proof.push([left, right]);
       }
-      index = Math.floor(index / 2)
+      index = Math.floor(index / 2);
     }
 
     return proof
   }
 
   _derive (data) {
-    let level = []
+    let level = [];
     // successively hash arbitrary elements
     for (let i = 0; i < data.length; i += 2) {
-      const left = data[i]
+      const left = data[i];
       const right = (i + 1 === data.length)
         ? left
-        : data[i + 1]
-      const node = JSON.stringify([left, right])
-      level.push(SHA256(node))
+        : data[i + 1];
+      const node = JSON.stringify([left, right]);
+      level.push(SHA256(node));
     }
     // derink and derive
     if (level.length > 1) {
       // keep deriving
-      return [level].concat(this._derive(level))
+      return [level].concat(this._derive(level));
     } else {
       // found root node
-      return [level]
+      return [level];
     }
   }
 
   get root () {
-    return this.levels[this.levels.length - 1][0]
+    return this.levels[this.levels.length - 1][0];
   }
 
   get depth () {
-    return this.levels.length
+    return this.levels.length;
   }
 
   get levels () {
-    return this._levels
+    return this._levels;
   }
 
   get leaves () {
-    return this.levels[0]
+    return this.levels[0];
   }
 }
+
 module.exports.MerkleTree = MerkleTree;
