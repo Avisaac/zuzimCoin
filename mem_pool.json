@@ -1,9 +1,1 @@
-[
-  {
-    "fromAddress": "04fd8404b17b36c6f4d58dbd957b57af374611c5dc2f84d38df2a0a9c38897d4be9f64385619f11e26d592f79461f2e20ed701587f6d56e6c8c45c95aac078d744",
-    "toAddress": "04ccec062522fedffe67fdfa16c1b866a6d4a31edd53259b460f14fc0d132fa00c51b0733ae5f15cd869d67050158877c8c935c47b9e14faf62874690c65a402eb",
-    "amount": "123\n",
-    "timestamp": 1590310296823,
-    "signature": "304502210099ea662bd119439d14622bf7ab243948971a2344c407b6b2ae5fd86741f966e902205d593351d66d36923eae20e2ad79d8d8b483a63c11e338fcb7fba743cb221a14"
-  }
-]
+[{"fromAddress":"a","toAddress":"s","amount":"1","timestamp":1590311574341},{"fromAddress":"a","toAddress":"s","amount":"1","timestamp":1590311594234}]

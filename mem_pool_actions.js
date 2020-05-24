@@ -15,21 +15,12 @@ class MemPoolActions {
     }
 
     readTransaction() {
-        let dataObj;
-        fs.readFileSync('./mem_pool.json', (err, data) => {
-            if (err) {
-                console.error(err.toString());
-            }
-            if (data) {
-                dataObj = JSON.parse(data);
-            }
-        });
-
-        return dataObj;
+        let text = fs.readFileSync('./mem_pool.json');
+        return JSON.parse(text.toString());
     }
 
     clear() {
-        fs.writeFileSync('./mem_pool.json', '');
+        fs.writeFileSync('./mem_pool.json', '[]');
     }
 }
 

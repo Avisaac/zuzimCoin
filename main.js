@@ -3,6 +3,7 @@ const {FullNode} = require('./full_node.js');
 const { stdin, exit, argv } = process;
 const {MemPoolActions} = require('./mem_pool_actions');
 const mActions = new MemPoolActions();
+
 mActions.clear();
 
 const params = {
