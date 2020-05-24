@@ -14,12 +14,17 @@ class Wallet extends Node {
         this.fullNodes = this.DNS.getFullNodes();
         this.bloomFilter = new BloomFilter(10,4);
         this.bloomFilter.add(this.address);
+        this.options = [
+            "1.Send zuzim: address amount",
+            "2.Verify: transactionId"
+        ]
     }
 
     init() {
         this.connection.topology = topology(this.connection.selfIp, this.connection.peerIps).
             on('connection', (fullNode,peer) => {
             this.sendBloomFilter(fullNode);
+            this.printMain(this.options)
             fullNode.on('data',data => {
                 console.log(data);
             })

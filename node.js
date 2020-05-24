@@ -21,6 +21,11 @@ class Node {
         const t = new Transaction(null, this.address, 1000);
         this.mActions.writeTransaction(t);
     }
+
+    printMain(options){
+        console.log("<-----options----->");
+        options.forEach(console.log)
+    }
 }
 
 module.exports.Node = Node;
